@@ -47,6 +47,9 @@ class Syslog:
         return log_dict
 
     def formatted(self):
+        """
+        Print log data formatted.
+        """
         print_data = ""
         for line in self._log_dict:
             print_data += (f"{line['date'].center(16)}"
@@ -56,4 +59,7 @@ class Syslog:
         return print_data
 
     def print_data(self):
+        """
+        Print log data without format.
+        """
         print(self._log_print)
