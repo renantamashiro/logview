@@ -47,7 +47,7 @@ class Usage:
             if option in line[0]:
                 func = line[1]['fn']
                 break
-        log_view = import_module('log_view')
+        log_view = import_module('core.log_view')
         try:
             getattr(log_view, func)(*args, **kwargs)
         except TypeError:
