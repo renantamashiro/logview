@@ -9,21 +9,9 @@ def get_logs():
     TODO: 
         - Handle exception encoding error)
     """
-    with open('/var/log/syslog', 'r') as data:
-        try:
-            syslog_data = data.read()
-        except UnicodeDecodeError:
-            current = data.readline()
-            syslog_data = list()
-            while(current):
-                syslog_data.append(current)
-                try:
-                    current = data.readline()
-                except UnicodeDecodeError:
-                    continue
-            syslog_data = ''.join(syslog_data)
-        finally:
-            return syslog_data
+    with open('/var/log/syslog', 'r', encoding='ascii', errors='surrogateescape') as data:
+        syslog_data = data.read()
+    return syslog_data
 
 # def format_logs(fn):
 #     """
@@ -42,7 +30,7 @@ def filter_log(**kwargs):
     """
     syslog = Syslog(get_logs())
     syslog.filter_log(**kwargs)
-    print(syslog.log_print)
+    sys.stdout.write(syslog.log_print)
 
 # @format_logs
 def print_all():
@@ -50,4 +38,4 @@ def print_all():
     Print all logs.
     """
     syslog = Syslog(get_logs())
-    print(syslog.log_print)
+    print(repr(syslog.log_print))
