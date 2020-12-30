@@ -2,7 +2,7 @@ class Syslog:
     def __init__(self, log):
         self._log = log
         self._log_dict = self.build_log_dict()
-        self._log_print = self.formatted()
+        self._log_print = self.formatted(self.log_dict)
     
     @property
     def log(self):
@@ -18,6 +18,27 @@ class Syslog:
         """
         self._log = log
     
+    @property
+    def log_dict(self):
+        """
+        Getter method that returns syslog dict.
+        """
+        return self._log_dict
+
+    @property
+    def log_print(self):
+        """
+        Getter method that returns syslog print.
+        """
+        return self._log_print
+    
+    @log_print.setter
+    def log_print(self, logs):
+        """
+        Setter method that change log print data.
+        """
+        self._log_print = logs
+
     def no_format(self):
         """
         Print syslog without format.
@@ -46,12 +67,12 @@ class Syslog:
                 continue
         return log_dict
 
-    def formatted(self):
+    def formatted(self, logs: list):
         """
         Print log data formatted.
         """
         print_data = ""
-        for line in self._log_dict:
+        for line in logs:
             print_data += (f"{line['date'].center(16)}"
                          f"|{line['user'].center(12)}"
                          f"|{line['source'].center(20)}"
@@ -62,4 +83,22 @@ class Syslog:
         """
         Print log data without format.
         """
-        print(self._log_print)
+        self.log_print = self.formatted(self.log_dict())
+
+
+    def filter_log(self, **kwargs):
+        for key, value in kwargs.items():
+            if key == 'pid':
+                logs = [log for log in self.log_dict if value in log['source']]
+        self.log_print = self.formatted(logs)
+
+
+class LogStr:
+    def __init__(self, log: dict):
+        self.date = log['date']
+        self.user = log['user']
+        self.source = log['source']
+        self.event = log['event']
+    
+    def __str__(self):
+        return f"{self.date} {self.user} {self.source} {self.event}"
