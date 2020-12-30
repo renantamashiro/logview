@@ -3,8 +3,22 @@ import sys
 from core.syslog import Syslog
 
 
-with open('/var/log/syslog', 'r') as data:
-    SYSLOG = data.read()
+def get_logs():
+    with open('/var/log/syslog', 'r') as data:
+        try:
+            syslog_data = data.read()
+        except UnicodeDecodeError:
+            current = data.readline()
+            syslog_data = list()
+            while(current):
+                syslog_data.append(current)
+                try:
+                    current = data.readline()
+                except UnicodeDecodeError:
+                    continue
+            syslog_data = ''.join(syslog_data)
+        finally:
+            return syslog_data
 
 def format_logs(fn):
     def wrapped():
@@ -19,4 +33,4 @@ def filter_pid(filter_option: str):
 
 @format_logs
 def print_all():
-    return SYSLOG
+    return get_logs()
