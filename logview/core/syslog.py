@@ -1,63 +1,57 @@
 class Syslog:
-    def __init__(self, log):
-        self._log = log
-        self._log_dict = self.build_log_dict()
-        self._log_print = self.formatted(self.log_dict)
+    def __init__(self, logs):
+        self._logs = logs
+        self._logs_list_format = self.build_logs_list_format()
+        
+    def __str__(self) -> str:
+        logs = list()
+        for log in self.logs_list_format:
+            logs.append(f"{log['date'].center(16)}"
+                        f"|{log['user'].center(12)}"
+                        f"|{log['source'].center(20)}"
+                        f"|{log['event']}")
+        return '\n'.join(logs)
     
     @property
-    def log(self):
+    def logs(self) -> str:
         """
         Getter method that returns syslog without format.
         """
-        return self._log
+        return self._logs
     
-    @log.setter
-    def log(self, log):
+    @logs.setter
+    def logs(self, logs: str) -> None:
         """
         Setter method that changes syslog data.
         """
-        self._log = log
+        self._logs = logs
     
     @property
-    def log_dict(self):
+    def logs_list_format(self) -> list:
         """
-        Getter method that returns syslog dict.
+        Getter method that returns syslog list.
         """
-        return self._log_dict
+        return self._logs_list_format
 
-    @property
-    def log_print(self):
+    @logs_list_format.setter
+    def logs_list_format(self, list_logs: list) -> None:
         """
-        Getter method that returns syslog print.
+        Setter method that changes syslog list.
         """
-        return self._log_print
+        self._logs_list_format = list_logs
     
-    @log_print.setter
-    def log_print(self, logs):
-        """
-        Setter method that change log print data.
-        """
-        self._log_print = logs
-
-    def no_format(self):
-        """
-        Print syslog without format.
-        """
-        print(self._log)
-    
-    def build_log_dict(self):
+    def build_logs_list_format(self) -> list:
         """
         Returns a list of dicts organized by date, user, source, and event.
         """
-        data = self.log
-        log_dict = list()
-        for line in data.split("\n"):
+        log_list = list()
+        for log in self.logs:
             try:
-                date = line[:15]
-                event_loc = line[16:].find(":") + 16
-                user, source = line[16:event_loc].split(" ")
-                event = line[event_loc+1:]
-                log_dict.append({
+                date = log[:15]
+                event_loc = log[16:].find(":") + 16
+                user, source = log[16:event_loc].split(" ")
+                event = log[event_loc+1:]
+                log_list.append({
                     "date": date,
                     "user": user,
                     "source": source,
@@ -65,40 +59,29 @@ class Syslog:
                     })
             except ValueError:
                 continue
-        return log_dict
+        return log_list
 
-    def formatted(self, logs: list):
-        """
-        Print log data formatted.
-        """
-        print_data = ""
-        for line in logs:
-            print_data += (f"{line['date'].center(16)}"
-                         f"|{line['user'].center(12)}"
-                         f"|{line['source'].center(20)}"
-                         f"|{line['event']}\n")
-        return print_data
-
-    def print_data(self):
+    def print_logs(self) -> None:
         """
         Print log data without format.
         """
-        self.log_print = self.formatted(self.log_dict())
+        self.logs_list_format = self.build_logs_list_format()
+        print(self)
 
-
-    def filter_log(self, **kwargs):
+    def filter_logs(self, **kwargs) -> None:
+        """
+        Filtering logs by Date, User and Source.
+            Date: date0 - date1, date0, time0 - time1 date0
+        """
+        logs = []
         for key, value in kwargs.items():
             if key == 'pid':
-                logs = [log for log in self.log_dict if value in log['source']]
-        self.log_print = self.formatted(logs)
+                logs = [log for log in self.logs_list_format if value in log['source']]
+        if logs:
+            self.logs_list_format = logs
+            print(self)
+        else:
+            print("There is no search results.")
 
-
-class LogStr:
-    def __init__(self, log: dict):
-        self.date = log['date']
-        self.user = log['user']
-        self.source = log['source']
-        self.event = log['event']
-    
-    def __str__(self):
-        return f"{self.date} {self.user} {self.source} {self.event}"
+    def filter_date():
+        pass

@@ -50,7 +50,7 @@ class Usage:
         log_view = import_module('core.log_view')
         try:
             getattr(log_view, func)(*args, **kwargs)
-        except TypeError:
+        except TypeError as e:
             if option == '-h' or option == '--help':
                 self.view_usage()
             else:

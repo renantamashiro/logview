@@ -1,7 +1,6 @@
 import sys
 
 from core.usage import Usage
-from core.log_view import filter_log, print_all
 
 
 def build() -> Usage:
@@ -10,8 +9,8 @@ def build() -> Usage:
     """
     usage = Usage('0.0.0')
     usage.add_option('-h', '--help', 'Show this message and exit.', None)
-    usage.add_option('-v', '--version', 'Shoe the version and exit.', None)
-    usage.add_option('-f', '--filter', 'Filter option.', 'filter_log')
+    usage.add_option('-v', '--version', 'Show the version and exit.', None)
+    usage.add_option('-f', '--filter', 'Filter option.', 'filter_logs')
     usage.add_option('-p', '--print', 'Print all logs.', 'print_all')
     return usage
 

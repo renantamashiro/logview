@@ -1,41 +1,63 @@
 import sys
 
-from core.syslog import LogStr, Syslog
+from core.syslog import Syslog
 
 
-def get_logs():
+def config():
+    """
+    Config deamon thread to catch syslog data periodically
+        attr: initial time, end time, period
+    """
+    pass
+
+def deamon():
+    """
+    Set a deamon process to catch syslog data.
+    """
+    pass
+
+def get_logs() -> list:
     """
     Returns logs on linux syslog file.
     TODO: 
         - Handle exception encoding error)
     """
-    with open('/var/log/syslog', 'r', encoding='ascii', errors='surrogateescape') as data:
-        syslog_data = data.read()
-    return syslog_data
+    logs = list()
+    with open('/var/log/syslog', 'r') as data:
+        current = data.readline()
+        while current:
+            try:
+                logs.append(current)
+                current = data.readline()
+            except UnicodeDecodeError as err:
+                continue
+    return logs
 
-# def format_logs(fn):
-#     """
-#     A decorator function that handle output style.
-#     """
-#     def wrapped():
-#         output_log = fn()
-#         syslog = Syslog(output_log)
-#         return syslog.print_data()
-#     return wrapped    
-
-# @format_logs
-def filter_log(**kwargs):
+def filter_logs(**kwargs) -> None:
     """
     Filter syslog output by pid.
     """
     syslog = Syslog(get_logs())
-    syslog.filter_log(**kwargs)
-    sys.stdout.write(syslog.log_print)
+    syslog.filter_logs(**kwargs)
 
-# @format_logs
-def print_all():
+def print_all() -> None:
     """
     Print all logs.
     """
     syslog = Syslog(get_logs())
-    print(repr(syslog.log_print))
+    syslog.print_logs()
+
+def sorting():
+    pass
+
+def to_csv():
+    pass
+
+def to_excel():
+    pass
+
+def to_json():
+    pass
+
+def to_pdf():
+    pass
