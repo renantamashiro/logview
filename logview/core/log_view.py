@@ -5,12 +5,12 @@ from core.syslog import Syslog
 
 def config():
     """
-    Config deamon thread to catch syslog data periodically
+    Config daemon thread to catch syslog data periodically
         attr: initial time, end time, period
     """
     pass
 
-def deamon():
+def daemon():
     """
     Set a deamon process to catch syslog data.
     """
