@@ -26,4 +26,4 @@ def run(option=None, args=[], kwargs={}) -> None:
             kwargs = dict([arg.split("=") for arg in args_list])
         usage.run_option(option[1], *args, **kwargs)
     except IndexError:
-        usage.view_usage()
+        print(usage.view_usage(), end='')

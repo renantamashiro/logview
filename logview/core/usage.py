@@ -14,19 +14,28 @@ class Usage:
         self._version = version
         self._options = list()
 
+    @property
     def version(self):
         """
         Return version.
         """
-        print(f"Linux log view, version {self._version}")
+        return f"Linux log view, version {self._version}"
 
     def add_option(self, cmd: str, option: str,
                    description: str, fn=None) -> None:
         """
         Add options to usage menu.
         """
-        opt = ((cmd, option, description), {'fn': fn})
-        self._options.append(opt)
+        test_params = (
+            isinstance(cmd, str) and
+            isinstance(option, str) and
+            isinstance(description, str)
+        )
+        if test_params:
+            opt = ((cmd, option, description), {'fn': fn})
+            self._options.append(opt)
+        else:
+            raise TypeError("CMD, Option, Description and Function must be strings")
     
     def view_usage(self):
         """
@@ -37,7 +46,7 @@ class Usage:
         for line in sorted_options:
             cmd, option, description = line[0]
             options_string.append(f"   {cmd.ljust(6)}{option.ljust(14)}{description}\n")
-        print(USAGE + ''.join(options_string), end='')
+        return USAGE + ''.join(options_string)
 
     def run_option(self, option, *args, **kwargs):
         """
@@ -52,6 +61,6 @@ class Usage:
             getattr(log_view, func)(*args, **kwargs)
         except TypeError as e:
             if option == '-h' or option == '--help':
-                self.view_usage()
+                print(self.view_usage(), end='')
             else:
-                self.version()
+                print(self.version)

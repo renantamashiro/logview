@@ -1,30 +1,30 @@
+from typing import Optional
+
+
 class Syslog:
     def __init__(self, logs):
         self._logs = logs
         self._logs_list_format = self.build_logs_list_format()
         
     def __str__(self) -> str:
-        logs = list()
-        for log in self.logs_list_format:
-            logs.append(f"{log['date'].center(16)}"
-                        f"|{log['user'].center(12)}"
-                        f"|{log['source'].center(20)}"
-                        f"|{log['event']}")
-        return '\n'.join(logs)
+        return self.print_logs()
     
     @property
-    def logs(self) -> str:
+    def logs(self) -> list:
         """
         Getter method that returns syslog without format.
         """
         return self._logs
     
     @logs.setter
-    def logs(self, logs: str) -> None:
+    def logs(self, logs: list) -> None:
         """
         Setter method that changes syslog data.
         """
-        self._logs = logs
+        if isinstance(logs, list):
+            self._logs = logs
+        else:
+            raise TypeError("`logs` must be a list instance")
     
     @property
     def logs_list_format(self) -> list:
@@ -38,8 +38,11 @@ class Syslog:
         """
         Setter method that changes syslog list.
         """
-        self._logs_list_format = list_logs
-    
+        if isinstance(list_logs, list):
+            self._logs_list_format = list_logs
+        else:
+            raise TypeError("`list_logs` must be a list instance")
+
     def build_logs_list_format(self) -> list:
         """
         Returns a list of dicts organized by date, user, source, and event.
@@ -61,27 +64,34 @@ class Syslog:
                 continue
         return log_list
 
-    def print_logs(self) -> None:
+    def print_logs(self, logs: Optional=None) -> str:
         """
         Print log data without format.
         """
-        self.logs_list_format = self.build_logs_list_format()
-        print(self)
+        logs = logs if logs != None else self.logs_list_format
+        logs_output = list()
+        for log in logs:
+            logs_output.append(f"{log['date'].center(16)}"
+                               f"|{log['user'].center(12)}"
+                               f"|{log['source'].center(20)}"
+                               f"|{log['event']}")
+        return '\n'.join(logs_output)   
 
-    def filter_logs(self, **kwargs) -> None:
+    def filter_logs(self, **kwargs) -> list:
         """
         Filtering logs by Date, User and Source.
             Date: date0 - date1, date0, time0 - time1 date0
         """
-        logs = []
+        logs = self.logs_list_format
         for key, value in kwargs.items():
             if key == 'pid':
-                logs = [log for log in self.logs_list_format if value in log['source']]
+                logs = [log for log in logs if value in log['source']]
+            else:
+                logs = [log for log in logs if value in log[key]]
         if logs:
-            self.logs_list_format = logs
-            print(self)
+            return self.print_logs(logs)
         else:
-            print("There is no search results.")
+            return "There is no search results."
 
     def filter_date():
         pass

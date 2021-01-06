@@ -1,6 +1,6 @@
 import sys
 
-from core.syslog import Syslog
+from .syslog import Syslog
 
 
 def config():
@@ -38,14 +38,14 @@ def filter_logs(**kwargs) -> None:
     Filter syslog output by pid.
     """
     syslog = Syslog(get_logs())
-    syslog.filter_logs(**kwargs)
+    print(syslog.filter_logs(**kwargs))
 
 def print_all() -> None:
     """
     Print all logs.
     """
     syslog = Syslog(get_logs())
-    syslog.print_logs()
+    print(syslog)
 
 def sorting():
     pass
