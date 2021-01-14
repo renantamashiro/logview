@@ -35,10 +35,19 @@ def get_logs() -> list:
 
 def filter_logs(**kwargs) -> None:
     """
-    Filter syslog output by pid.
+    Filter syslog output.
     """
     syslog = Syslog(get_logs())
-    print(syslog.filter_logs(**kwargs))
+    logs = syslog.logs_list_format
+    for key, value in kwargs.items():
+        if key == 'pid':
+            logs = [log for log in logs if value in log['source']]
+        else:
+            logs = [log for log in logs if value in log[key]]
+    if logs:
+        print(syslog.print_logs(logs))
+    else:
+        print("There is no search results.")
 
 def print_all() -> None:
     """
@@ -47,8 +56,38 @@ def print_all() -> None:
     syslog = Syslog(get_logs())
     print(syslog)
 
-def sorting():
-    pass
+def sorting(*args):
+    syslog = Syslog(get_logs())
+    logs = sorted(syslog.logs_list_format)
+
+
+def merge_sort(logs: list, option):
+    size_list = len(logs)
+
+    if size_list < 2:
+        return logs[0]
+    
+    list1, list2 = list(), list()
+
+    for i in range(0,size_list//2):
+        list1.append(logs.pop())
+
+    while logs:
+        list2.append(logs.pop())
+
+    merge_sort(list1, option)
+    merge_sort(list2, option)
+    merge(logs, list1, list2, option)
+
+def merge(logs, list1, list2, option):
+    for i in range(len(list1)):
+        if list1[i][option] > list2[i][option]:
+            logs.append(list2.pop(i))
+    while list1:
+        logs.append(list1.pop())
+    while list2:
+        logs.append(list2.pop())
+
 
 def to_csv():
     pass

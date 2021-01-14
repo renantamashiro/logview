@@ -76,22 +76,3 @@ class Syslog:
                                f"|{log['source'].center(20)}"
                                f"|{log['event']}")
         return '\n'.join(logs_output)   
-
-    def filter_logs(self, **kwargs) -> list:
-        """
-        Filtering logs by Date, User and Source.
-            Date: date0 - date1, date0, time0 - time1 date0
-        """
-        logs = self.logs_list_format
-        for key, value in kwargs.items():
-            if key == 'pid':
-                logs = [log for log in logs if value in log['source']]
-            else:
-                logs = [log for log in logs if value in log[key]]
-        if logs:
-            return self.print_logs(logs)
-        else:
-            return "There is no search results."
-
-    def filter_date():
-        pass

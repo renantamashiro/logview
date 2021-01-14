@@ -60,6 +60,7 @@ class Usage:
         try:
             getattr(log_view, func)(*args, **kwargs)
         except TypeError as e:
+            print(e)
             if option == '-h' or option == '--help':
                 print(self.view_usage(), end='')
             else:

@@ -12,6 +12,7 @@ def build() -> Usage:
     usage.add_option('-v', '--version', 'Show the version and exit.', None)
     usage.add_option('-f', '--filter', 'Filter option.', 'filter_logs')
     usage.add_option('-p', '--print', 'Print all logs.', 'print_all')
+    usage.add_option('-s', '--sort', 'Print all logs.', 'sorting')
     return usage
 
 def run(option=None, args=[], kwargs={}) -> None:
