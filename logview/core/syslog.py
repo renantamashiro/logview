@@ -4,7 +4,7 @@ from typing import Optional
 class Syslog:
     def __init__(self, logs):
         self._logs = logs
-        self._logs_list_format = self.build_logs_list_format()
+        self._logs_list = self.build_logs_list()
         
     def __str__(self) -> str:
         return self.print_logs()
@@ -27,23 +27,23 @@ class Syslog:
             raise TypeError("`logs` must be a list instance")
     
     @property
-    def logs_list_format(self) -> list:
+    def logs_list(self) -> list:
         """
         Getter method that returns syslog list.
         """
-        return self._logs_list_format
+        return self._logs_list
 
-    @logs_list_format.setter
-    def logs_list_format(self, list_logs: list) -> None:
+    @logs_list.setter
+    def logs_list(self, logs_list: list) -> None:
         """
         Setter method that changes syslog list.
         """
-        if isinstance(list_logs, list):
-            self._logs_list_format = list_logs
+        if isinstance(logs_list, list):
+            self._logs_list = logs_list
         else:
-            raise TypeError("`list_logs` must be a list instance")
+            raise TypeError("`logs_list` must be a list instance")
 
-    def build_logs_list_format(self) -> list:
+    def build_logs_list(self) -> list:
         """
         Returns a list of dicts organized by date, user, source, and event.
         """
@@ -68,7 +68,7 @@ class Syslog:
         """
         Print log data without format.
         """
-        logs = logs if logs != None else self.logs_list_format
+        logs = logs if logs != None else self.logs_list
         logs_output = list()
         for log in logs:
             logs_output.append(f"{log['date'].center(16)}"

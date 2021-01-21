@@ -23,8 +23,8 @@ def run(option=None, args=[], kwargs={}) -> None:
         usage = build()
         if len(option) > 2:
             args_list = list(option[2:])
-            args = [args_list.pop(i) for i in range(len(args_list)-1) if args_list[i].find("=") == -1]
-            kwargs = dict([arg.split("=") for arg in args_list])
+            args = [args_list.pop(i) for i in range(len(args_list)) if args_list[i].find("=") == -1]
+            kwargs = dict([arg.split("=") for arg in args_list]) if args_list else {}
         usage.run_option(option[1], *args, **kwargs)
     except IndexError:
         print(usage.view_usage(), end='')

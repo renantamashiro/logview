@@ -38,7 +38,7 @@ def filter_logs(**kwargs) -> None:
     Filter syslog output.
     """
     syslog = Syslog(get_logs())
-    logs = syslog.logs_list_format
+    logs = syslog.logs_list
     for key, value in kwargs.items():
         if key == 'pid':
             logs = [log for log in logs if value in log['source']]
@@ -58,8 +58,8 @@ def print_all() -> None:
 
 def sorting(*args):
     syslog = Syslog(get_logs())
-    logs = sorted(syslog.logs_list_format)
-
+    logs = sorted(syslog.logs_list, key=lambda x: x[args[0]])
+    print(syslog.print_logs(logs))
 
 def merge_sort(logs: list, option):
     size_list = len(logs)
