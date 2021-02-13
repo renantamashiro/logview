@@ -41,13 +41,13 @@ def general_help_message_builder(*args):
     """
     Attributes to extract:
         - __name__
-        - 
+        -
     """
     help_string = ""
     for cls_option in args:
         methods = inspect.getmembers(cls_option, predicate=inspect.isfunction)
         for method in methods:
-            if method[1].__name__ in option_accessors:
+            if method[1].__name__ in usage_options:
                 name = getattr(cls_option, method[0])("name")
                 cmd = getattr(cls_option, method[0])("cmd")
                 help_msg = getattr(cls_option, method[0])("help")
@@ -76,8 +76,6 @@ class UsageCreator:
                 cmd = getattr(self.cls_instance, method[0])("cmd")
                 command_options.append((cmd, method[0]))
         return command_options
-
-
 
 
 class Usage:

@@ -53,9 +53,14 @@ class Syslog:
                 date = log[:15]
                 event_loc = log[16:].find(":") + 16
                 user, source = log[16:event_loc].split(" ")
-                event = log[event_loc + 1 :]
+                event = log[event_loc + 1:]
                 log_list.append(
-                    {"date": date, "user": user, "source": source, "event": event}
+                    {
+                        "date": date,
+                        "user": user,
+                        "source": source,
+                        "event": event
+                    }
                 )
             except ValueError:
                 continue

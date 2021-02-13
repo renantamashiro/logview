@@ -1,16 +1,16 @@
 import unittest
 
 from logview.core.syslog import Syslog
-from logview.core import log_view
+from logview.core import logview
 
 
 class SyslogTest(unittest.TestCase):
     def setUp(self):
-        data = log_view.get_logs()
+        data = logview.get_logs()
         self.syslog = Syslog(data)
-    
+
     def test_log_setter_getter_methods(self):
-        data = log_view.get_logs()
+        data = logview.get_logs()
         self.syslog.logs = data
         self.assertEqual(data, self.syslog.logs)
         self.assertIsInstance(self.syslog.logs, list)
