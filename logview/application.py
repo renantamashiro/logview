@@ -1,36 +1,30 @@
-from core.usage import Usage
+import sys
+
+from cli.filter import Filter
+from usagebuilder.usage import UsageCreator
 
 
-def build() -> Usage:
-    """
-    Add commands and options for an Usage instance.
-    """
-    usage = Usage("0.0.0")
-    usage.add_option("-h", "--help", "Show this message and exit.", None)
-    usage.add_option("-v", "--version", "Show the version and exit.", None)
-    usage.add_option("-f", "--filter", "Filter option.", "filter_logs")
-    usage.add_option("-p", "--print", "Print all logs.", "print_all")
-    usage.add_option("-s", "--sort", "Sorting options.", "sorting")
-    usage.add_option("-c", "--sort", "Print all logs.", "sorting")
-    return usage
+commands = [
+    Filter
+]
 
 
-def run(option=None, args=[], kwargs={}) -> None:
-    """
-    Run logview.
-    """
+def run():
+    options = sys.argv
+    usage = UsageCreator("0.0.0", commands)
     try:
-        usage = build()
-        if len(option) > 2:
-            args_list = list(option[2:])
+        if len(options) > 2:
+            args_list = list(options[2:])
             args = [
                 args_list.pop(i)
                 for i in range(len(args_list))
                 if args_list[i].find("=") == -1
             ]
-            kwargs = {}
             if args_list:
                 kwargs = dict([arg.split("=") for arg in args_list])
-        usage.run_option(option[1], *args, **kwargs)
-    except IndexError:
-        print(usage.view_usage(), end="")
+        usage.run_option(options[1], args, kwargs)
+    except IndexError as e:
+        usage.help_message()
+
+if __name__ == "__main__":
+    run()
