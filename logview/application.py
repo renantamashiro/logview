@@ -22,9 +22,6 @@ def run():
             ]
             if args_list:
                 kwargs = dict([arg.split("=") for arg in args_list])
-        usage.run_option(options[1], args, kwargs)
+        usage.run_option(options[1], *args, **kwargs)
     except IndexError as e:
         usage.help_message()
-
-if __name__ == "__main__":
-    run()

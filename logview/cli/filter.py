@@ -3,7 +3,7 @@ from usagebuilder.usage import option_description
 
 
 class Filter:
-    @option_description("filter", "-f", "Filter syslog output")
+    @option_description("filter", "-f-log=syslog", "Filter syslog output")
     @syslog
     def filter_logs(syslog, *args, **kwargs) -> None:
         """

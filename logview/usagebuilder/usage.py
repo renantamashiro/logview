@@ -6,8 +6,7 @@ usage_options = [
     "option_accessors",
 ]
 
-usage_menu = """
-%s
+usage_menu = """%s
 
 USAGE
 \tlogview [-h] <command> [<arg1>] ... [<argN>]
@@ -48,7 +47,8 @@ def option_description(name: str, cmd: str, help_usage_message: str) -> None:
 
 class UsageCreator:
     """
-    Para cada classe a ser criada
+    Create with a list of modules that represents commands.
+    Each method that has a decorator in usage_options is mapped.
     """
 
     def __init__(self, version: str, modules: list):
@@ -85,9 +85,7 @@ class UsageCreator:
 
     def help_message(self):
         """
-        Attributes to extract:
-            - __name__
-            -
+        Prints the usage help message.
         """
         print(usage_menu % self.version, end="")
         for cls_option in self._modules:
