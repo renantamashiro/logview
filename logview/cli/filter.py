@@ -1,5 +1,5 @@
-from .logs import syslog
-from usagebuilder.usage import option_description
+from logview.cli.logs import syslog
+from logview.usagebuilder.usage import option_description
 
 
 class Filter:

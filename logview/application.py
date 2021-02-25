@@ -1,7 +1,7 @@
 import sys
 
-from cli.filter import Filter
-from usagebuilder.usage import UsageCreator
+from logview.cli.filter import Filter
+from logview.usagebuilder.usage import UsageCreator
 
 
 commands = [

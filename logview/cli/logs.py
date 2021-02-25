@@ -1,4 +1,4 @@
-from .models.syslog import Syslog
+from logview.cli.models.syslog import Syslog
 
 
 def get_logs(file_log: str) -> list:

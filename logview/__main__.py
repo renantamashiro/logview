@@ -1,3 +1,4 @@
-import application
+from logview import application
 
-application.run()
+def main():
+    application.run()
