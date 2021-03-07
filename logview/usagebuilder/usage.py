@@ -28,7 +28,7 @@ def option_description(name: str, cmd: str, help_usage_message: str) -> None:
     A decorator that set basic attributes
     for each command (`name`, `cmd`, `help message`)
     """
-
+    
     def function_option(fn):
         def option_accessors(*args, **kwargs):
             if "help" in args:
